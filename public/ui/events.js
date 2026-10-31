@@ -6,6 +6,8 @@ import { formatDate } from '../engine/dates.js';
 import { taskStatuses } from '../engine/plan.js';
 import { VENDOR_STATUS } from '../engine/progress.js';
 import { EVENT_TYPES } from '../engine/templates.js';
+import { quoteCard, messageCard } from './tools.js';
+import { helpersCard } from './helpers.js';
 
 const REFINE = ['Cheaper', 'More traditional', 'Good for kids and elders', 'Less to arrange'];
 
@@ -90,5 +92,5 @@ export function renderEvents(root, ctx) {
   clear(root).append(...ctx.plan.events.map((ev) => h('section', { 'aria-labelledby': `h-${ev.id}` },
     h('div', { class: 'event-head' }, h('h2', { id: `h-${ev.id}` }, ev.name),
       h('p', { class: 'small' }, `${EVENT_TYPES[ev.type].label} on ${formatDate(ev.date)}, ${ev.guests} guests`)),
-    h('div', { class: 'cols wide' }, budgetCard(ev, ctx), timelineCard(ev, ctx), vendorCard(ev, ctx), ideasCard(ev, ctx)))));
+    h('div', { class: 'cols wide' }, budgetCard(ev, ctx), timelineCard(ev, ctx), vendorCard(ev, ctx), ideasCard(ev, ctx), quoteCard(ev, ctx), messageCard(ev, ctx), helpersCard(ev, ctx)))));
 }

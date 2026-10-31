@@ -6,6 +6,7 @@ import { SCENARIOS, runScenario } from '../engine/whatif.js';
 import { describeChange, applyChange } from '../engine/change.js';
 import { formatINR } from '../engine/money.js';
 import { formatDate } from '../engine/dates.js';
+import { explainPanel } from './helpers.js';
 
 function chart(cal) {
   const W = 720;
@@ -90,5 +91,6 @@ export function renderOverview(root, ctx) {
     h('div', { class: 'cols' },
       h('div', { class: 'card' }, fixesPanel(fixes, ctx.applyFix), !fixes.length && h('p', {}, cal.shortfall ? 'No single fix closes this. Try a smaller budget with the change box.' : 'No gap to fix. Use "Test a bad day" to see how safe this is.')),
       h('div', { class: 'card' }, scenariosPanel(season)),
-      h('div', { class: 'card' }, changePanel(season, ctx))));
+      h('div', { class: 'card' }, changePanel(season, ctx)),
+      h('div', { class: 'card' }, explainPanel(ctx))));
 }

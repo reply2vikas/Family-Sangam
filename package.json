@@ -10,7 +10,7 @@
     "start": "node scripts/dev.mjs",
     "lint": "node scripts/lint.mjs",
     "test": "node --test \"test/*.test.js\"",
-    "coverage": "node --test --experimental-test-coverage --test-coverage-include='public/engine/**' --test-coverage-include='api/**' --test-coverage-lines=95 --test-coverage-branches=90 --test-coverage-functions=95 \"test/*.test.js\"",
+    "coverage": "node --test --experimental-test-coverage --test-coverage-include='public/engine/**' --test-coverage-include='api/**' --test-coverage-include='public/ui/h.js' --test-coverage-include='public/ui/state.js' --test-coverage-include='public/ui/api.js' --test-coverage-lines=95 --test-coverage-branches=90 --test-coverage-functions=95 \"test/*.test.js\"",
     "check": "npm run lint && npm run coverage"
   }
 }

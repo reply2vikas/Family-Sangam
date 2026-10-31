@@ -27,13 +27,15 @@ A **season** is: start date, money in hand, income dates, and up to six events. 
 | `whatif.js` | One-click bad-day scenarios |
 | `change.js` | Validate, apply and explain a change; offline parser |
 | `schema.js` | Validation and clean-up for everything crossing a trust boundary |
+| `extras.js`, `insights.js` | Checklist, schedule and savings clean-up (savings capped by code); season facts, the number check and RSVP counting |
+| `quote.js`, `message.js` | Vendor-quote clean-up, comparison and warnings; message kinds, languages and offline template |
 | `ideas.js`, `progress.js`, `view.js`, `sample.js` | Ideas clean-up, saved progress, chart geometry, demo data |
 
 ## Design decisions
 
 - **Integers everywhere.** Money is whole rupees and shares use the largest-remainder method, so line items always add up to the budget exactly.
 - **Fixes are data.** A fix is a small patch (`shifted`, `trimmed`, `reserve`) merged into `season.adjust`. Applying, ranking and undoing are all "merge and rebuild".
-- **The server is thin.** `api/_lib/tasks.js` builds a fenced prompt, asks for JSON, then validates with the same code the browser uses.
+- **The server is thin.** `api/_lib/tasks.js`, `writing.js` and `more.js` build a fenced prompt, asks for JSON, then validates with the same code the browser uses.
 - **Engine shared by both sides.** The functions live under `public/` so the browser can import them as modules; the API imports the same files (`includeFiles` in `vercel.json`).
 
 ## Performance

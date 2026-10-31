@@ -12,4 +12,8 @@
 | Other headers | `X-Content-Type-Options`, `Referrer-Policy: no-referrer`, `Permissions-Policy`, HSTS. | `vercel.json` |
 | Privacy | The plan is stored only in the browser. Text sent to Gemini is the description, change request or ideas request the person typed. No accounts, no database, no analytics. | |
 
+Pasted quotes and message notes go through the same fence and size limits as every other input. Quote text is capped at 2,500 characters, and the model's answer is validated before anything is shown.
+
+Savings and summary routes receive the whole season but rebuild the plan on the server from validated input, so the model can only be shown numbers the code computed. Summaries are checked number by number before they are displayed.
+
 Known limits: the rate limiter is not shared between serverless instances, so a determined abuser could exceed it. A production version would use a shared store.

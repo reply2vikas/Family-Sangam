@@ -45,6 +45,12 @@ function context() {
       ideaCache[ev.id] = r;
       return r;
     },
+    ask: (path, body) => postJSON(path, body),
+    readQuote: (b) => postJSON('/api/quote', b),
+    draftMessage: (b) => postJSON('/api/message', b),
+    copy: async (text) => {
+      try { await navigator.clipboard.writeText(text); say('Copied.'); } catch { say('Could not copy. Select the text and copy it by hand.', true); }
+    },
     setOverride: (eventId, lineId, value) => {
       const events = season.events.map((e) => {
         if (e.id !== eventId) return e;

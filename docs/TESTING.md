@@ -1,6 +1,6 @@
 # Testing
 
-Run `npm test` for the suites or `npm run check` for lint plus the coverage gate (95% lines, 90% branches, 95% functions over `public/engine` and `api`). Built-in `node:test` only; nothing to install.
+806 test cases at the time of writing. Run `npm test` for the suites or `npm run check` for lint plus the coverage gate (95% lines, 90% branches, 95% functions over `public/engine` and `api`). Built-in `node:test` only; nothing to install.
 
 | Suite | What it proves |
 |---|---|
@@ -8,7 +8,17 @@ Run `npm test` for the suites or `npm run check` for lint plus the coverage gate
 | Property tests (seeded) | Later income never raises the lowest balance; more cash never lowers it; paying an advance later within its window never lowers it; the top fix never makes things worse and never cuts a must-have |
 | `change.test.js` | Validation rejects bad dates, ranges and unknown fields; a change touches only its target event and keeps progress; the "what changed" text; the offline parser handles the example sentence |
 | `api.test.js` | Gemini client sends the key in a header, fails over between models, cools down rate-limited ones, and turns every failure into one error; routes enforce method, size and rate limits; each AI task validates output and falls back honestly; user text cannot break out of the prompt fence |
+| `writing.test.js` | Quote reader and message writer: 12 wording cases for code-side warnings, 8 amount formats (lakh, k, Rs, INR, ₹), price-comparison verdict boundaries, the 10% line, all message kinds and languages, offline fallbacks, prompt-fence test |
+| `ui.test.js` | Browser helpers run against a small fake DOM: the element builder never turns text into markup, saved state survives corrupt or blocked storage, the fetch helper turns failures into readable errors |
+| `cases.test.js` | Table-driven cases: money formatting, calendar maths, 17 plain-words change phrasings, all three event types at 8 guest counts from 1 to 5000, applied changes always give a valid season, the cash shape is the same wherever the season starts |
+| `extras.test.js` | Checklist, day-of schedule and savings: 18 valid and invalid time cases, 14 checklist-item cases, 14 savings cases (unknown lines, zero, negative, fractional, over-cap, must-have half cap), offline fallbacks for every event type, and the three API tasks with a fake Gemini |
+| `insights.test.js` | The number check (accepts only numbers that were given, 12 amounts both ways, 16 small/year/other cases), 30 RSVP phrasings in English, Hindi and Hinglish, RSVP totals, 100 seeded random seasons where the code-written summary passes its own number check, and the explain and RSVP tasks including an invented-number rejection |
+| `grid.test.js` | 90 grid cases (3 event types × 6 guest counts × 5 budgets), 150 seeded random seasons, 60 calendar round-trips across month ends and leap days, 54 money splits |
 | `evidence.test.js` | Checks the README's claims against the files: lint rules, CSP, no key in browser code, no runtime dependencies, docs exist, accessibility basics, colour contrast |
+
+## How the count is made up
+
+About 400 of the cases are one rule checked across many inputs (table-driven, grid or seeded random). That is a deliberate way to get breadth, and the README says so rather than presenting them as 806 different behaviours. The behaviour list above is what each suite proves.
 
 ## Things deliberately not asserted
 
@@ -19,4 +29,4 @@ Some tempting properties are false, so they are not tested as rules:
 
 ## Not covered by the coverage gate
 
-`public/app.js` and `public/ui/*` build the screen from the tested engine. They are checked by hand in desktop and phone-sized browsers and by the evidence tests (no HTML injection, labels, CSP), not by unit tests. This is stated openly rather than hidden by the coverage number.
+`public/app.js` and the screen-building files in `public/ui/` (`overview.js`, `events.js`, `tools.js`, `setup.js`) build the screen from the tested engine. They are checked by hand in desktop and phone-sized browsers and by the evidence tests (no HTML injection, labels, CSP), not by unit tests. This is stated openly rather than hidden by the coverage number.

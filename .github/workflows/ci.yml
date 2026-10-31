@@ -1,0 +1,8 @@
+GEMINI_API_KEY=your-key-from-aistudio.google.com
+node_modules/
+.env
+.env.*
+!.env.example
+.vercel/
+coverage/
+*.log

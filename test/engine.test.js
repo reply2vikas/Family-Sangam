@@ -212,3 +212,14 @@ test('what-if: a comfortable season reads as fine, and "earlier" never goes befo
   const soon = { ...sampleSeason(TODAY), events: [{ ...sampleSeason(TODAY).events[0], date: addDays(TODAY, 5) }] };
   assert.ok(runScenario(soon, 'first-earlier').after.days.length >= 1);
 });
+
+test('payments planned before the season starts are flagged overdue and still count on day one', () => {
+  const s = { ...sampleSeason(TODAY), events: [{ ...sampleSeason(TODAY).events[0], date: addDays(TODAY, 20) }] };
+  const plan = buildPlan(s);
+  const late = plan.payments.filter((p) => p.overdue);
+  assert.ok(late.length >= 2);
+  assert.ok(late.every((p) => p.original < TODAY));
+  assert.ok(buildPlan(sampleSeason(TODAY)).payments.every((p) => p.overdue === (p.date < TODAY)));
+  const first = cashCalendar(s).days[0];
+  assert.ok(first.balance <= s.startBalance - late.reduce((a, p) => a + p.amount, 0) + s.incomes.filter((i) => i.date === TODAY).reduce((a, i) => a + i.amount, 0));
+});

@@ -8,7 +8,7 @@ A GenAI planning assistant for weddings, birthdays and community events. Most pl
 2. **What should we change?** Ranked fixes (pay an advance later within its usual window, skip an optional line, hold back a reserve). Must-haves are never cut.
 3. **What if something changes?** Type "50 more guests, smaller budget, event 2 weeks earlier". Gemini reads it, you confirm it, and the plan is revised in place with a "what changed" summary. Ticked tasks and your own amounts are kept.
 
-Live app: add your Vercel link here. Demo video and LinkedIn post: see the submission form.
+Live app: https://family-sangam-planner-new.vercel.app/ (demo video and LinkedIn post are linked in the submission form).
 
 ## What you get for each event
 

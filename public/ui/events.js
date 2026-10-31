@@ -40,6 +40,11 @@ function timelineCard(ev, ctx) {
     })));
 }
 
+function firstPayment(p) {
+  if (p.overdue) return [`${formatINR(p.amount)} `, h('span', { class: 'badge late' }, 'already due'), ` (planned for ${formatDate(p.original)}). Check this with the vendor now.`];
+  return `${formatINR(p.amount)} on ${formatDate(p.date)}${p.refundableUntil ? `, refundable until ${formatDate(p.refundableUntil)}` : ''}`;
+}
+
 function vendorCard(ev, ctx) {
   const lines = ev.lines.filter((l) => l.vendor && !l.trimmed);
   const rows = lines.map((l) => {
@@ -53,7 +58,7 @@ function vendorCard(ev, ctx) {
       h('td', {}, h('label', { for: nid, class: 'sr' }, `${l.vendor} name`), h('input', { id: nid, value: saved.name, maxlength: 60, placeholder: 'Name', onchange: (e) => ctx.setVendor(l.key, { name: e.target.value }) })),
       h('td', {}, h('label', { for: sid, class: 'sr' }, `${l.vendor} status`), h('select', { id: sid, onchange: (e) => ctx.setVendor(l.key, { status: e.target.value }) },
         VENDOR_STATUS.map((s) => h('option', { value: s, selected: s === saved.status }, s)))),
-      h('td', {}, first ? `${formatINR(first.amount)} on ${formatDate(first.date)}${first.refundableUntil ? `, refundable until ${formatDate(first.refundableUntil)}` : ''}` : 'No advance'));
+      h('td', {}, first ? firstPayment(first) : 'No advance'));
   });
   return h('div', { class: 'card' }, h('h3', {}, 'Vendor checklist'),
     h('p', { class: 'small' }, 'Dates and refund windows are typical assumptions. Confirm each one in your written quote.'),

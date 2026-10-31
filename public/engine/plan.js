@@ -70,7 +70,7 @@ function buildPayments(event, lines, season) {
       out.push({
         id, eventId: event.id, lineKey: line.key, label: `${line.label}: advance`, kind: 'advance',
         amount: advAmount, date: when, original: date, earliest: date, latest,
-        refundableUntil: addDays(date, REFUND_WINDOW_DAYS),
+        refundableUntil: addDays(date, REFUND_WINDOW_DAYS), overdue: when < season.startDate,
       });
       balAmount -= advAmount;
     }
@@ -78,7 +78,7 @@ function buildPayments(event, lines, season) {
       out.push({
         id: `${line.key}:bal`, eventId: event.id, lineKey: line.key, label: `${line.label}: balance`,
         kind: 'balance', amount: balAmount, date: balDate, original: balDate, earliest: balDate,
-        latest: balDate, refundableUntil: null,
+        latest: balDate, refundableUntil: null, overdue: balDate < season.startDate,
       });
     }
   }

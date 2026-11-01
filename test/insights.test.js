@@ -109,3 +109,11 @@ test('runRsvp: Gemini rows are cleaned and totalled; empty answer falls back; in
   assert.equal((await runRsvp({ text: 'Amit: no' }, {}, {})).totals.no, 1);
   await assert.rejects(runRsvp({ text: ' ' }, KEY), (e) => e.status === 400);
 });
+
+test('runExplain tells the model the events are still in the future', async () => {
+  let prompt;
+  const fetchImpl = async (u, init) => { prompt = JSON.parse(init.body).contents[0].parts[0].text; return answer({ summary: 'Riya ki shaadi 30 Jan ko hogi.' })(); };
+  await runExplain({ season: sampleSeason(TODAY), language: 'Hindi' }, KEY, { fetchImpl });
+  assert.match(prompt, /still in the future/);
+  assert.match(prompt, /never say an event happened/);
+});

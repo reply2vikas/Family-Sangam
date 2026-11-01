@@ -100,7 +100,7 @@ export async function runExplain(body, env, deps = {}) {
   const facts = buildFacts(plan, cal, suggestFixes(season));
   const language = LANGUAGES.includes(body.language) ? body.language : 'English';
   const user = [`Explain this family's season to a relative who does not like spreadsheets. Write in ${language}${language === 'Hinglish' ? ' (Hindi in the English alphabet)' : ''}, under 120 words, warm and plain.`,
-    'Use ONLY the facts below. Quote numbers exactly as given. Do not add any other number, price or date.', `Facts:\n${facts.lines.join('\n')}`].join('\n');
+    'All events are still in the future: use future or present tense, never say an event happened or guests attended. Use ONLY the facts below. Quote numbers exactly as given. Do not add any other number, price or date.', `Facts:\n${facts.lines.join('\n')}`].join('\n');
   const r = await ask('explain', user, env, deps);
   const text = r ? cleanText(r.data?.summary, 900) : '';
   const check = text ? verifyNumbers(text, facts.numbers) : { ok: false };

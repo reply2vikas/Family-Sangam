@@ -24,12 +24,13 @@ export function cleanMessage(raw) {
 }
 
 /** English fallback used when Gemini is not reachable. */
-export function offlineMessage(kind, { name = 'our celebration', date, vendor = 'your team' } = {}) {
+export function offlineMessage(kind, { name = 'our celebration', date, vendor } = {}) {
+  const hello = vendor ? `Hello ${vendor},` : 'Hello,';
   const when = isISODate(date) ? formatDate(date) : 'the planned date';
   const templates = {
     invitation: [`Invitation: ${name}`, `Namaste! We would be delighted to have you with us for ${name} on ${when}. Please let us know if you can come, so we can plan for everyone.`],
-    vendor_followup: [`Following up: ${name}`, `Hello ${vendor}, I am writing about ${name} on ${when}. Could you please confirm the booking, the final price and what is included? Thank you.`],
-    move_advance: [`Request about the advance for ${name}`, `Hello ${vendor}, for ${name} on ${when}, could we pay the advance a few days later than planned? We are happy to confirm the booking in writing today. Please let us know what works.`],
+    vendor_followup: [`Following up: ${name}`, `${hello} I am writing about ${name} on ${when}. Could you please confirm the booking, the final price and what is included? Thank you.`],
+    move_advance: [`Request about the advance for ${name}`, `${hello} for ${name} on ${when}, could we pay the advance a few days later than planned? We are happy to confirm the booking in writing today. Please let us know what works.`],
     thanks: [`Thank you for ${name}`, `Thank you for being part of ${name}. Your presence meant a lot to our family.`],
   };
   const [subject, body] = templates[kind] || templates.invitation;

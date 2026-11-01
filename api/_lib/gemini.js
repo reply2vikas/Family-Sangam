@@ -57,7 +57,11 @@ export async function generateJSON({
       last = err;
     }
   }
-  throw new GeminiError('unavailable', last);
+  const failure = new GeminiError('unavailable', last);
+  failure.reason = last?.message || 'unknown';
+  // Visible in the hosting provider's logs (never includes the key or any user text).
+  if (!process.env.NODE_TEST_CONTEXT) console.error(`gemini unavailable: ${failure.reason}`);
+  throw failure;
 }
 
 /** Test helper: forget cooldowns. */

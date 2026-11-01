@@ -151,3 +151,8 @@ test('the real route files are wired to POST handlers', async () => {
   assert.equal(r.statusCode, 200);
   assert.equal(r.json.source, 'offline-sample');
 });
+
+test('gemini: when every model fails the error carries a readable reason (no key or user text)', async () => {
+  await assert.rejects(generateJSON({ system: 's', user: 'secret user text', schema: {}, apiKey: 'k-secret', models: ['a'], fetchImpl: async () => status(429) }),
+    (e) => e.code === 'unavailable' && e.reason === 'status 429' && !JSON.stringify(e.reason).includes('secret'));
+});

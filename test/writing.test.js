@@ -140,3 +140,10 @@ test('the new route files are wired to POST handlers', async () => {
   await messageHandler({ method: 'POST', headers: { 'x-forwarded-for': 'w2' }, body: { kind: 'thanks' } }, r);
   assert.equal(r.statusCode, 200);
 });
+
+test('offline vendor messages greet by name, or plainly when no vendor is given', () => {
+  assert.match(offlineMessage('move_advance', { name: 'X', vendor: 'Raj Caterers' }).body, /^Hello Raj Caterers, /);
+  assert.match(offlineMessage('move_advance', { name: 'X' }).body, /^Hello, /);
+  assert.match(offlineMessage('vendor_followup', { name: 'X' }).body, /^Hello, /);
+  assert.ok(!/your team/.test(offlineMessage('vendor_followup', { name: 'X' }).body));
+});

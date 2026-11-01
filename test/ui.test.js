@@ -102,3 +102,42 @@ test('postJSON: sends JSON, returns data, and turns failures into readable error
     await assert.rejects(postJSON('/api/x', {}), /Could not reach the server/);
   } finally { globalThis.fetch = realFetch; }
 });
+
+function find(el, pred) {
+  if (pred(el)) return el;
+  for (const c of el.children || []) { const hit = c instanceof FakeEl ? find(c, pred) : null; if (hit) return hit; }
+  return null;
+}
+
+test('More help card: a result with no confirmed guests shows no stray "false" and no button', async () => {
+  const { helpersCard } = await import('../public/ui/helpers.js');
+  const ev = { id: 'e1', type: 'wedding', name: 'W', date: '2026-12-20', guests: 100 };
+  const ctx = { season: {}, commit() {}, ask: async () => ({ source: 'gemini', replies: [{ name: 'Guest', response: 'unclear', party: 1 }], totals: { yes: 0, maybe: 0, no: 0, unclear: 1 } }) };
+  const card = helpersCard(ev, ctx);
+  const select = find(card, (e) => e.tag === 'select');
+  const box = find(card, (e) => e.tag === 'textarea');
+  const go = find(card, (e) => e.tag === 'button');
+  select.value = 'rsvp';
+  box.value = 'hello';
+  await go.listeners.click();
+  const text = card.textContent;
+  assert.match(text, /Unclear: 1/);
+  assert.ok(!/false|undefined|null/.test(text), text);
+  assert.equal(find(card, (e) => e.tag === 'button' && /Set guests/.test(e.textContent)), null);
+});
+
+test('More help card: with confirmed guests the "Set guests" button appears and applies the count', async () => {
+  const { helpersCard } = await import('../public/ui/helpers.js');
+  const { normalizeSeason } = await import('../public/engine/schema.js');
+  const season = normalizeSeason(sampleSeason('2026-11-01')).season;
+  let committed;
+  const ctx = { season, commit: (next, note) => { committed = { next, note }; }, ask: async () => ({ source: 'gemini', replies: [], totals: { yes: 3, maybe: 0, no: 0, unclear: 0 } }) };
+  const card = helpersCard({ ...season.events[0], id: 'e1' }, ctx);
+  find(card, (e) => e.tag === 'select').value = 'rsvp';
+  find(card, (e) => e.tag === 'textarea').value = 'Amit: yes';
+  await find(card, (e) => e.tag === 'button').listeners.click();
+  const apply = find(card, (e) => e.tag === 'button' && /Set guests to 3/.test(e.textContent));
+  assert.ok(apply);
+  apply.listeners.click();
+  assert.equal(committed.next.events[0].guests, 3);
+});

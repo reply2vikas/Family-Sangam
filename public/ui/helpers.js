@@ -46,7 +46,7 @@ export function helpersCard(ev, ctx) {
     clear(out).append(h('p', { class: 'small' }, 'Working…'));
     try {
       const r = await ctx.ask(view.path, view.needsText ? { text: text.value } : { event: { type: ev.type, name: ev.name, date: ev.date, guests: ev.guests }, eventId: ev.id, season: ctx.season, note: text.value });
-      clear(out).append(h('p', { class: 'small' }, badge(r.source, 'by Gemini'), r.note ? ` ${r.note}` : ''), ...[view.body(r, ev, ctx)].flat());
+      clear(out).append(h('p', { class: 'small' }, badge(r.source, 'by Gemini'), r.note ? ` ${r.note}` : ''), ...[view.body(r, ev, ctx)].flat().filter(Boolean));
     } catch (err) { clear(out).append(h('p', { class: 'errors' }, err.message)); } finally { go.disabled = false; }
   } }, 'Help me');
   return h('div', { class: 'card no-print' }, h('h3', {}, 'More help'),

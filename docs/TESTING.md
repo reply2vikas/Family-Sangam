@@ -1,6 +1,6 @@
 # Testing
 
-806 test cases at the time of writing. Run `npm test` for the suites or `npm run check` for lint plus the coverage gate (95% lines, 90% branches, 95% functions over `public/engine` and `api`). Built-in `node:test` only; nothing to install.
+822 test cases at the time of writing. Run `npm test` for the suites or `npm run check` for lint plus the coverage gate (95% lines, 90% branches, 95% functions over `public/engine` and `api`). Built-in `node:test` only; nothing to install.
 
 | Suite | What it proves |
 |---|---|
@@ -14,11 +14,12 @@
 | `extras.test.js` | Checklist, day-of schedule and savings: 18 valid and invalid time cases, 14 checklist-item cases, 14 savings cases (unknown lines, zero, negative, fractional, over-cap, must-have half cap), offline fallbacks for every event type, and the three API tasks with a fake Gemini |
 | `insights.test.js` | The number check (accepts only numbers that were given, 12 amounts both ways, 16 small/year/other cases), 30 RSVP phrasings in English, Hindi and Hinglish, RSVP totals, 100 seeded random seasons where the code-written summary passes its own number check, and the explain and RSVP tasks including an invented-number rejection |
 | `grid.test.js` | 90 grid cases (3 event types × 6 guest counts × 5 budgets), 150 seeded random seasons, 60 calendar round-trips across month ends and leap days, 54 money splits |
-| `evidence.test.js` | Checks the README's claims against the files: lint rules, CSP, no key in browser code, no runtime dependencies, docs exist, accessibility basics, colour contrast |
+| `screens.test.js` | The real overview and event-card screens render against a fake DOM: all three event types appear with Budget, Timeline and Vendor checklist; the red-day banner, chart label and table twin; "Use this fix" hands the fix to the app; "Test a bad day" changes nothing; the no-gap message; an empty change is refused before any request |
+| `evidence.test.js` | Checks the README's claims against the files: lint rules (including unused imports), CSP, no key in browser code, no runtime dependencies, docs exist, accessibility basics, colour contrast |
 
 ## How the count is made up
 
-About 400 of the cases are one rule checked across many inputs (table-driven, grid or seeded random). That is a deliberate way to get breadth, and the README says so rather than presenting them as 806 different behaviours. The behaviour list above is what each suite proves.
+About 400 of the cases are one rule checked across many inputs (table-driven, grid or seeded random). That is a deliberate way to get breadth, and the README says so rather than presenting them as 822 different behaviours. The behaviour list above is what each suite proves.
 
 ## Things deliberately not asserted
 
@@ -29,4 +30,4 @@ Some tempting properties are false, so they are not tested as rules:
 
 ## Not covered by the coverage gate
 
-`public/app.js` and the screen-building files in `public/ui/` (`overview.js`, `events.js`, `tools.js`, `setup.js`) build the screen from the tested engine. They are checked by hand in desktop and phone-sized browsers and by the evidence tests (no HTML injection, labels, CSP), not by unit tests. This is stated openly rather than hidden by the coverage number.
+`public/app.js` (the wiring that talks to the browser, storage and the network) and the screen-building files in `public/ui/` (`overview.js`, `events.js`, `tools.js`, `setup.js`, `helpers.js`) are outside the percentage gate. `screens.test.js` and `ui.test.js` render the main screens and helpers against a fake DOM, and the evidence tests check for no HTML injection, labels and CSP. The rest is checked by hand in desktop and phone-sized browsers. This is stated openly rather than hidden by the coverage number.

@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
-import { files, lintSource } from '../scripts/lint.mjs';
+import { files, lintSource, unusedImports } from '../scripts/lint.mjs';
 import { progressCases } from './progress.cases.js';
 
 const read = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
@@ -18,6 +18,12 @@ test('the linter really catches each rule', () => {
   assert.equal(lintSource('public/x.js', bad).length, 5);
   assert.equal(lintSource('public/x.js', 'x\n'.repeat(300)).length, 1);
   assert.deepEqual(lintSource('scripts/x.mjs', 'console.log(1)'), []);
+});
+
+test('the linter reports imports that are never used, and accepts used and renamed ones', () => {
+  assert.deepEqual(unusedImports("import { a, b as c } from './x.js';\nuse(a);"), ['c']);
+  assert.deepEqual(unusedImports("import def, { z } from './x.js';\ndef(z);"), []);
+  assert.deepEqual(lintSource('public/x.js', "import { gone } from './x.js';\n"), ['public/x.js: "gone" is imported but never used']);
 });
 
 test('Content-Security-Policy forbids inline scripts and styles and outside connections', () => {

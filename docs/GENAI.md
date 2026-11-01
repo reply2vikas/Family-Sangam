@@ -39,3 +39,7 @@ It never calculates money or dates, and it never decides whether a quote is acce
 2. Structured JSON with a schema. Ranges validated in code.
 3. Added `assumptions`, so that when the model has to guess (for example "smaller budget" with no number), the guess is shown to the person rather than hidden.
 4. Added the offline parser using the same output shape, so the change test works without any AI and the same validator and apply code run on both paths.
+
+## Checking the connection
+
+`GET /api/health` (`api/_lib/health.js`) reports whether `GEMINI_API_KEY` is set, whether it looks well-formed, and whether a one-line test call to Gemini works. It never returns the key, and the result is cached for a minute so it cannot be used to run up usage. When a real request fails, the server also writes the reason (for example `status 429`) to the hosting logs. It never logs the key or what the person typed.

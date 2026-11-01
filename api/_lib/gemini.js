@@ -28,7 +28,12 @@ export function fence(text, max = 800) {
 export async function generateJSON({
   system, user, schema, apiKey, fetchImpl = fetch, now = Date.now, models = MODELS, timeoutMs = 25_000,
 }) {
-  if (!apiKey) throw new GeminiError('no-key');
+  if (!apiKey) {
+    if (!process.env.NODE_TEST_CONTEXT) console.error('gemini unavailable: GEMINI_API_KEY is not set');
+    const missing = new GeminiError('no-key');
+    missing.reason = 'no key';
+    throw missing;
+  }
   let last = null;
   for (const model of models) {
     if ((cooldown.get(model) || 0) > now()) continue;

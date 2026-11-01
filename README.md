@@ -59,6 +59,8 @@ GEMINI_API_KEY=your-key npm start      # http://localhost:3000
 npm run check      # lint + tests with coverage gates
 ```
 
+Check that Gemini is connected: open `/api/health` on your deployment. It says whether the key is set and whether Gemini answers (it never shows the key).
+
 No key? The app still works: "Try a sample season", the form, and offline fallbacks.
 
 Deploy: import the repo in Vercel and set `GEMINI_API_KEY`. No build step. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).

@@ -15,7 +15,7 @@
 | `insights.test.js` | The number check (accepts only numbers that were given, 12 amounts both ways, 16 small/year/other cases), 30 RSVP phrasings in English, Hindi and Hinglish, RSVP totals, 100 seeded random seasons where the code-written summary passes its own number check, and the explain and RSVP tasks including an invented-number rejection |
 | `grid.test.js` | 90 grid cases (3 event types × 6 guest counts × 5 budgets), 150 seeded random seasons, 60 calendar round-trips across month ends and leap days, 54 money splits |
 | `screens.test.js` | The real overview and event-card screens render against a fake DOM: all three event types appear with Budget, Timeline and Vendor checklist; the red-day banner, chart label and table twin; "Use this fix" hands the fix to the app; "Test a bad day" changes nothing; the no-gap message; an empty change is refused before any request |
-| `evidence.test.js` | Checks the README claims against the files and that the JSDoc shapes in `types.js` match what the engine really returns (fields compared both ways); lint rules (including unused imports), CSP, no key in browser code, no runtime dependencies, docs exist, accessibility basics, colour contrast |
+| `evidence.test.js` | Checks the README claims against the files and that the JSDoc shapes in `types.js` list the same field names as what the engine really returns, compared both ways (names and required/optional, not value types); lint rules (including unused imports), CSP, no key in browser code, no runtime dependencies, docs exist, accessibility basics, colour contrast |
 
 ## How the count is made up
 

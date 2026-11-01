@@ -69,7 +69,7 @@ Deploy: import the repo in Vercel and set `GEMINI_API_KEY`. No build step. See [
 
 | Criterion | What was done | Proof |
 |---|---|---|
-| Code quality | Small pure modules, no framework, files under 260 lines, one job per file | `scripts/lint.mjs`, [architecture](docs/ARCHITECTURE.md) |
+| Code quality | Small pure modules, no framework, one job per file; every JS file in public/, api/ and scripts/ is under 260 lines (checked by the linter) | `scripts/lint.mjs`, [architecture](docs/ARCHITECTURE.md) |
 | Security | Strict CSP (no inline script or style), key only on the server and sent in a header, input validated and size-limited, rate limit, prompt data fenced, no `innerHTML` anywhere | [docs/SECURITY.md](docs/SECURITY.md), `test/evidence.test.js` |
 | Efficiency | Zero runtime dependencies, no build, cash calendar is a single pass over at most 800 days, one AI call per action | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 | Testing | 823 test cases (see the breakdown in [docs/TESTING.md](docs/TESTING.md)): unit, table-driven, a parameter grid, 150 seeded random seasons, API tests with a fake Gemini, browser-helper and screen-rendering tests with a fake DOM, and tests that check this README's claims. Coverage gate in CI | [docs/TESTING.md](docs/TESTING.md) |
@@ -93,7 +93,7 @@ Deploy: import the repo in Vercel and set `GEMINI_API_KEY`. No build step. See [
 public/            the whole front end (no build)
   engine/          pure planning logic, shared by browser and server
   ui/              DOM code (builds elements, never HTML strings)
-api/               ten Vercel functions, one per Gemini feature
+api/               eleven Vercel routes: ten Gemini features plus /api/health
   _lib/            Gemini client, request handling, the ten AI tasks
 test/              node:test suites
 docs/              architecture, GenAI, security, accessibility, testing

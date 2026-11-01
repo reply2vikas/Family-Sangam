@@ -38,6 +38,7 @@
  * @property {number} startBalance  whole rupees
  * @property {Income[]} incomes
  * @property {CelebrationEvent[]} events
+ * @property {number} [priceUpPct]  percent added to every budget by the "Vendor prices rise" scenario
  * @property {Adjust} [adjust]
  */
 

@@ -106,6 +106,9 @@ test('types.js describes the real shapes: Season, Event, Income, BudgetLine, Pay
   const plan = buildPlan(season);
   const fix = suggestFixes(season)[0];
   matches('Season', applyAdjust(season, fix.patch));
+  const { SCENARIOS } = await import('../public/engine/whatif.js');
+  const priceRise = SCENARIOS.find((x) => x.id === 'prices-up');
+  matches('Season', priceRise.apply(season));
   matches('CelebrationEvent', season.events[0]);
   matches('Income', season.incomes[0]);
   matches('BudgetLine', plan.events[0].lines[0]);

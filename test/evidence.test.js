@@ -83,3 +83,37 @@ test('the docs promised in the README exist and are not empty', () => {
 });
 
 test('saved-progress cleaning drops malformed entries', progressCases);
+
+// The JSDoc shapes in public/engine/types.js must match what the engine really returns.
+function documented(name) {
+  const block = read('public/engine/types.js').split('/**').find((b) => b.includes(`@typedef {object} ${name}`));
+  const props = [...block.matchAll(/@property \{[^}]+\} (\[?)(\w+)/g)].map((m) => ({ name: m[2], optional: m[1] === '[' }));
+  return { all: props.map((p) => p.name).sort(), required: props.filter((p) => !p.optional).map((p) => p.name).sort() };
+}
+const matches = (name, value) => {
+  const doc = documented(name);
+  const actual = Object.keys(value).sort();
+  assert.deepEqual(actual.filter((k) => !doc.all.includes(k)), [], `${name}: undocumented fields`);
+  assert.deepEqual(doc.required.filter((k) => !actual.includes(k)), [], `${name}: documented but missing fields`);
+};
+
+test('types.js describes the real shapes: Season, Event, Income, BudgetLine, Payment, CashCalendar, Fix', async () => {
+  const { sampleSeason } = await import('../public/engine/sample.js');
+  const { buildPlan } = await import('../public/engine/plan.js');
+  const { cashCalendar } = await import('../public/engine/cash.js');
+  const { suggestFixes, applyAdjust } = await import('../public/engine/fixes.js');
+  const season = sampleSeason('2026-11-01');
+  const plan = buildPlan(season);
+  const fix = suggestFixes(season)[0];
+  matches('Season', applyAdjust(season, fix.patch));
+  matches('CelebrationEvent', season.events[0]);
+  matches('Income', season.incomes[0]);
+  matches('BudgetLine', plan.events[0].lines[0]);
+  matches('Payment', plan.payments[0]);
+  matches('Payment', plan.payments.find((p) => p.kind === 'balance'));
+  matches('CashCalendar', cashCalendar(season, plan));
+  matches('DayBalance', cashCalendar(season, plan).lowest);
+  matches('Fix', fix);
+  matches('Adjust', applyAdjust(season, fix.patch).adjust);
+  assert.throws(() => matches('Payment', { id: 'x', surprise: 1 }));
+});

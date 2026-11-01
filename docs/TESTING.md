@@ -1,6 +1,6 @@
 # Testing
 
-822 test cases at the time of writing. Run `npm test` for the suites or `npm run check` for lint plus the coverage gate (95% lines, 90% branches, 95% functions over `public/engine` and `api`). Built-in `node:test` only; nothing to install.
+823 test cases at the time of writing. Run `npm test` for the suites or `npm run check` for lint plus the coverage gate (95% lines, 90% branches, 95% functions over `public/engine` and `api`). Built-in `node:test` only; nothing to install.
 
 | Suite | What it proves |
 |---|---|
@@ -15,11 +15,11 @@
 | `insights.test.js` | The number check (accepts only numbers that were given, 12 amounts both ways, 16 small/year/other cases), 30 RSVP phrasings in English, Hindi and Hinglish, RSVP totals, 100 seeded random seasons where the code-written summary passes its own number check, and the explain and RSVP tasks including an invented-number rejection |
 | `grid.test.js` | 90 grid cases (3 event types × 6 guest counts × 5 budgets), 150 seeded random seasons, 60 calendar round-trips across month ends and leap days, 54 money splits |
 | `screens.test.js` | The real overview and event-card screens render against a fake DOM: all three event types appear with Budget, Timeline and Vendor checklist; the red-day banner, chart label and table twin; "Use this fix" hands the fix to the app; "Test a bad day" changes nothing; the no-gap message; an empty change is refused before any request |
-| `evidence.test.js` | Checks the README's claims against the files: lint rules (including unused imports), CSP, no key in browser code, no runtime dependencies, docs exist, accessibility basics, colour contrast |
+| `evidence.test.js` | Checks the README claims against the files and that the JSDoc shapes in `types.js` match what the engine really returns (fields compared both ways); lint rules (including unused imports), CSP, no key in browser code, no runtime dependencies, docs exist, accessibility basics, colour contrast |
 
 ## How the count is made up
 
-About 400 of the cases are one rule checked across many inputs (table-driven, grid or seeded random). That is a deliberate way to get breadth, and the README says so rather than presenting them as 822 different behaviours. The behaviour list above is what each suite proves.
+About 400 of the cases are one rule checked across many inputs (table-driven, grid or seeded random). That is a deliberate way to get breadth, and the README says so rather than presenting them as 823 different behaviours. The behaviour list above is what each suite proves.
 
 ## Things deliberately not asserted
 

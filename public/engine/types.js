@@ -25,10 +25,10 @@
  */
 
 /**
- * @typedef {object} Adjust
- * @property {Record<string, number>} [shifted]  payment id to days later
- * @property {string[]} [trimmed]                optional line ids skipped
- * @property {string[]} [reserve]                event ids whose contingency is held back
+ * @typedef {object} Adjust  small patches merged into the season by the "ways to close the gap" fixes
+ * @property {Record<string, string>} shifted  payment id to the later ISO date it is paid on
+ * @property {string[]} trimmed                budget line keys ("eventId:lineId") skipped
+ * @property {string[]} reserve                event ids whose contingency reserve is held back
  */
 
 /**
@@ -43,44 +43,59 @@
 
 /**
  * @typedef {object} BudgetLine
+ * @property {string} key       "eventId:lineId"
  * @property {string} id
  * @property {string} label
+ * @property {boolean} must     a must-have: never cut by a fix
+ * @property {string | null} vendor
+ * @property {boolean} reserve  the contingency line
+ * @property {boolean} perGuest
  * @property {number} amount
- * @property {boolean} mustHave
- * @property {'estimate' | 'you entered'} source
+ * @property {'estimate' | 'you'} source  "you" when the family typed the amount
+ * @property {boolean} trimmed
  */
 
 /**
  * @typedef {object} Payment
  * @property {string} id
  * @property {string} eventId
- * @property {string} lineId
- * @property {string} date
+ * @property {string} lineKey
+ * @property {string} label
+ * @property {'advance' | 'balance'} kind
  * @property {number} amount
- * @property {boolean} [overdue]  due before the season starts
+ * @property {string} date             when it is paid now
+ * @property {string} original         the date before any fix moved it
+ * @property {string} earliest
+ * @property {string} latest           the last date a fix may move it to
+ * @property {string | null} refundableUntil
+ * @property {boolean} overdue         due before the season starts
  */
 
 /**
- * @typedef {object} CalendarDay
+ * @typedef {object} DayBalance
  * @property {string} date
  * @property {number} balance
  */
 
 /**
  * @typedef {object} CashCalendar
- * @property {CalendarDay[]} days
- * @property {boolean} shortfall
- * @property {string | null} firstShortDate
- * @property {number} lowest   the worst balance in the season
+ * @property {DayBalance[]} days
+ * @property {DayBalance} lowest              the worst day of the season
+ * @property {DayBalance | null} shortfall    the first day the balance goes below zero, or null
+ * @property {number} needed                  extra cash the worst day would have needed
  */
 
 /**
  * @typedef {object} Fix
+ * @property {string} id
+ * @property {'move' | 'reserve' | 'trim'} type
  * @property {string} label
  * @property {string} detail
- * @property {Adjust} patch
- * @property {boolean} resolved   closes the gap by itself
- * @property {number} lowestAfter
+ * @property {Partial<Adjust>} patch
+ * @property {boolean} resolved      closes the gap by itself
+ * @property {string | null} shortfallAfter  first short day after the fix, or null
+ * @property {number} lowestAfter    the worst balance after the fix
+ * @property {number} gain           how much the worst day improves
  */
 
 export {};

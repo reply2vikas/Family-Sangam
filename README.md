@@ -2,7 +2,7 @@
 
 **Every celebration this season, one family budget.**
 
-A GenAI planning assistant for weddings, birthdays and community events. Most planners treat each event on its own. Real families pay for several in the same few months out of one pool of money. Family Sangam plans them together and answers three questions:
+A GenAI planning assistant for weddings, birthdays and community events. Most planners treat each event on its own. Real families pay for several in the same few months out of one pool of money. Family Sangam plans them together and answers five questions:
 
 1. **Will we run short, and on which day?** A cash calendar built from your income dates and vendor payment dates finds the first day the balance goes below zero.
 2. **What should we change?** Ranked fixes (pay an advance later within its usual window, skip an optional line, hold back a reserve). Must-haves are never cut.
